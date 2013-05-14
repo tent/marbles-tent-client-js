@@ -33,6 +33,12 @@ class @TentClient
         @fragment = decodeURIComponent(@fragment) if @fragment
         @version = parseInt(@version)
 
+    assertMatch: (other_type) =>
+      return false unless @base is other_type.base
+      return false unless @version is other_type.version
+      return false if @fragment != null && @fragment != undefined && @fragment != other_type.fragment
+      true
+
     toString: =>
       "#{@base}/v#{@version}##{@fragment || ''}"
 
