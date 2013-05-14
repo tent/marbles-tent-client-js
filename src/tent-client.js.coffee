@@ -45,6 +45,9 @@ class @TentClient
     toStringWithoutFragment: =>
       "#{@base}/v#{@version}"
 
+    toURIString: =>
+      "#{@base}/v#{@version}##{encodeURIComponent(@fragment || '')}"
+
   class @HTTP
     @MEDIA_TYPES = {
       post: "application/vnd.tent.post.v0+json"
