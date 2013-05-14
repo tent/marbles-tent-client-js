@@ -30,6 +30,7 @@ class @TentClient
     parseUri: (uri) =>
       if m = uri.match(TYPE_URI_REGEX)
         [m, @base, @version, @fragment] = m
+        @fragment = decodeURIComponent(@fragment) if @fragment
         @version = parseInt(@version)
 
     toString: =>
