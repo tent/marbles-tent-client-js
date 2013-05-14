@@ -1,7 +1,7 @@
 #= require ./marbles/http/middleware/hawk
 #= require_self
 
-TYPE_URI_REGEX = /^(.+)\/v(\d+)(?:#(.+)?)?$/
+TYPE_URI_REGEX = /^(.+?)\/v(\d+)(?:#(.+)?)?$/
 URI_TEMPLATE_REGEX = /\{([^\}]+)\}/g
 
 class @TentClient
