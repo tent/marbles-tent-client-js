@@ -36,6 +36,9 @@ class @TentClient
     toString: =>
       "#{@base}/v#{@version}##{@fragment || ''}"
 
+    toStringWithoutFragment: =>
+      "#{@base}/v#{@version}"
+
   class @HTTP
     @MEDIA_TYPES = {
       post: "application/vnd.tent.post.v0+json"
