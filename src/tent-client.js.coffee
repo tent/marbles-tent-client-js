@@ -30,7 +30,7 @@ class @TentClient
     parseUri: (uri) =>
       if m = uri.match(TYPE_URI_REGEX)
         [m, @base, @version, @fragment] = m
-        @fragment = decodeURIComponent(@fragment) if @fragment
+        @fragment = @decodeFragment(@fragment) if @fragment
         @version = parseInt(@version)
 
     assertMatch: (other_type) =>
@@ -39,14 +39,29 @@ class @TentClient
       return false if @fragment != null && @fragment != undefined && @fragment != other_type.fragment
       true
 
+    decodeFragment: (fragment) =>
+      return fragment unless fragment
+      [frag, rest...] = decodeURIComponent(fragment).split('#')
+      [frag].concat(_.map(rest, (_frag) => @decodeFragment(_frag))).join('#')
+
+    encodeFragment: (fragment) =>
+      return fragment unless fragment
+      parts = fragment.split('#')
+      memo = null
+      for i in [parts.length-1..0]
+        part = parts[i]
+        part += '#' + memo if memo
+        memo = encodeURI(part).replace('#', '%23')
+      memo
+
     toString: =>
-      "#{@base}/v#{@version}##{@fragment || ''}"
+      "#{@base}/v#{@version}##{@encodeFragment(@fragment || '')}"
 
     toStringWithoutFragment: =>
       "#{@base}/v#{@version}"
 
     toURIString: =>
-      "#{@base}/v#{@version}##{encodeURIComponent(@fragment || '')}"
+      "#{@base}/v#{@version}##{@encodeFragment(@fragment || '')}"
 
   class @HTTP
     @MEDIA_TYPES = {
