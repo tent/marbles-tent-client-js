@@ -33,6 +33,9 @@ class @TentClient
         @fragment = @decodeFragment(@fragment) if @fragment
         @version = parseInt(@version)
 
+    setFragment: (fragment) =>
+      @fragment = @decodeFragment(fragment)
+
     assertMatch: (other_type) =>
       return false unless @base is other_type.base
       return false unless @version is other_type.version
