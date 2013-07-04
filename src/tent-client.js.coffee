@@ -133,6 +133,8 @@ class @TentClient
       list: @listPosts
     }
 
+    @discover = @performDiscovery
+
   runRequest: =>
     new @constructor.HTTP(@).runRequest(arguments...)
 
@@ -242,4 +244,16 @@ class @TentClient
   listPosts: (args = {}) =>
     [params, headers, callback] = [args.params, args.headers, args.callback]
     @runRequest(args.method || 'GET', 'posts_feed', params, null, headers, null, callback)
+
+  performDiscovery: (args = {}) =>
+    [params, headers, callback] = [_.clone(args.params || {}), args.headers || {}, args.callback]
+
+    unless params.hasOwnProperty('entity')
+      throw new Error("entity member of params is required! Got \"#{params.entity}\"")
+
+    if params.type
+      headers.Accept = "#{@mediaType('post')}; type=\"#{params.type}\""
+      delete params.type
+
+    @runRequest('GET', 'discover', params, null, headers, null, callback)
 
