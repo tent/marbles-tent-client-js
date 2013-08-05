@@ -261,3 +261,7 @@ class @TentClient
 
     @runRequest('GET', 'discover', params, null, headers, null, callback)
 
+  serverInfo: (args = {}) =>
+    [params, headers, callback] = [_.clone(args.params || {}), args.headers || {}, args.callback]
+    @runRequest('GET', 'server_info', params, null, headers, null, callback)
+
