@@ -159,7 +159,7 @@ class @TentClient
         key: _credentials.hawk_key,
         algorithm: _credentials.hawk_algorithm
       },
-      ttlSec: 86400 # 24 hours
+      ttlSec: params.ttl || 86400 # 24 hours
     )
 
     uri = new Marbles.HTTP.URI(url)
