@@ -1,7 +1,7 @@
 #= require ./marbles/http/middleware/hawk
 #= require_self
 
-TYPE_URI_REGEX = /^(.+?)\/v(\d+)(#(.+)?)?$/
+TYPE_URI_REGEX = /^(.+?)\/v([^#]+)(#(.+)?)?$/
 URI_TEMPLATE_REGEX = /\{([^\}]+)\}/g
 
 class @TentClient
@@ -32,7 +32,6 @@ class @TentClient
         [m, @base, @version, fragment_sep, @fragment] = m
         @fragment = @decodeFragment(@fragment) if @fragment
         @has_fragment = !!fragment_sep
-        @version = parseInt(@version)
 
     setFragment: (fragment) =>
       @fragment = @decodeFragment(fragment)
