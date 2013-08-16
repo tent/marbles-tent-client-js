@@ -67,7 +67,10 @@ class @TentClient
       "#{@base}/v#{@version}"
 
     toURIString: =>
-      "#{@base}/v#{@version}##{@encodeFragment(@fragment || '')}"
+      if @has_fragment
+        "#{@base}/v#{@version}##{@encodeFragment(@fragment || '')}"
+      else
+        "#{@base}/v#{@version}"
 
   class @HTTP
     @MEDIA_TYPES = {
