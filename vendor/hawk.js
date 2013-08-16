@@ -550,7 +550,7 @@ if (typeof module !== "undefined" && module.exports) {
 
         // Calculate signature
 
-        var exp = Math.floor(now / 1000) + options.ttlSec;
+        var exp = options.exp || Math.floor(now / 1000) + options.ttlSec;
         var mac = Crypto.calculateMac('bewit', credentials, {
             ts: exp,
             nonce: '',

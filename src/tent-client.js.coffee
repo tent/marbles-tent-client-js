@@ -152,15 +152,21 @@ class @TentClient
       url = @getNamedUrl(url, params)
 
     return url unless _credentials = @credentials
-    bewit = hawk.client.getBewit(
-      url,
+
+    bewit_params = {
       credentials: {
         id: _credentials.id,
         key: _credentials.hawk_key,
         algorithm: _credentials.hawk_algorithm
-      },
-      ttlSec: params.ttl || 86400 # 24 hours
-    )
+      }
+    }
+
+    if params.exp
+      bewit_params.exp = params.exp
+    else
+      bewit_params.ttlSec = params.ttl || 86400 # 24 hours
+
+    bewit = hawk.client.getBewit(url, bewit_params)
 
     uri = new Marbles.HTTP.URI(url)
     uri.mergeParams(bewit: bewit)
