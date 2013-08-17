@@ -515,8 +515,7 @@ if (typeof module !== "undefined" && module.exports) {
         if (!uri ||
             (typeof uri !== 'string' && typeof uri !== 'object') ||
             !options ||
-            typeof options !== 'object' ||
-            !options.ttlSec) {
+            typeof options !== 'object' || (!options.ttlSec && !options.exp)) {
 
             return '';
         }
