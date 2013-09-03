@@ -49,7 +49,7 @@ if (typeof module !== "undefined" && module.exports) {
 
       now: function () {
 
-          return Date.now() + hawk.utils.getNtpOffset();
+          return Date.now() + (hawk.utils.getNtpOffset() * 1000);
       },
 
       escapeHeaderAttribute: function (attribute) {

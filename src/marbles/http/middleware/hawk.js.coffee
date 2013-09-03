@@ -28,5 +28,12 @@ Marbles.HTTP.Middleware.Hawk = class HawkMiddleware
 
     http.setHeader('Authorization', header)
 
-  processResponse: (http, xhr) ->
+  processResponse: (http, xhr, opts = {}) ->
+    return unless www_authenticate_header = xhr.getResponseHeader('WWW-Authenticate')
+
+    # Verify tsm and get ts skew offset
+    res = { headers: { 'www-authenticate': www_authenticate_header } }
+    return unless hawk.client.authenticate(res, @credentials)
+
+    opts.retry()
 
