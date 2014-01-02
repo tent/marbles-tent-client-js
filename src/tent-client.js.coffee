@@ -126,6 +126,8 @@ class @TentClient
     @credentials = @options.credentials
     @server_meta_post = @options.server_meta_post
 
+    @middleware = _.clone(TentClient::middleware)
+
     if @credentials
       @middleware.push(new Marbles.HTTP.Middleware.Hawk(credentials: @credentials))
 
