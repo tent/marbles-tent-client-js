@@ -22,12 +22,13 @@
 			options[k] = this.options[k];
 		}
 
-		if (http.body && !http.multipart) {
+		if (http.body) {
 			options.payload = http.body;
 			options.contentType = http.getRequestHeader('Content-Type');
 		}
 
 		var header = hawk.client.header(http.url, http.method, options).field;
+
 		if (!header) {
 			return;
 		}
