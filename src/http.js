@@ -59,6 +59,10 @@
 						}
 					} else {
 						if (typeof callback.failure === 'function') {
+							if (typeof res === 'string') {
+								// handle middleware reported error
+								res = { error: res };
+							}
 							callback.failure(res, xhr);
 						}
 					}
