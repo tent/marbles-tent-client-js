@@ -37,7 +37,7 @@
 
 	Hawk.prototype.processResponse = function (http, xhr, options) {
 		var header = http.getResponseHeader('WWW-Authenticate');
-		if (!header) {
+		if (!header || header === 'Hawk') {
 			return;
 		}
 
