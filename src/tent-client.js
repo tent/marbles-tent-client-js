@@ -25,7 +25,11 @@
 
 		if (this.credentials) {
 			this.middleware.push(new Marbles.HTTP.Middleware.Hawk({
-				credentials: this.credentials
+				credentials: {
+					id: this.credentials.id,
+					key: this.credentials.hawk_key,
+					algorithm: this.credentials.hawk_algorithm
+				}
 			}));
 		}
 
