@@ -22,10 +22,10 @@
 			options[k] = this.options[k];
 		}
 
-		if (http.body) {
+		if (http.body && !http.multipart) {
 			options.payload = http.body;
-			options.contentType = http.getRequestHeader('Content-Type');
 		}
+		options.contentType = http.getRequestHeader('Content-Type');
 
 		var header = hawk.client.header(http.url, http.method, options).field;
 
