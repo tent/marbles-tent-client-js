@@ -109,10 +109,10 @@
 			}
 		};
 
-		if (params.exp) {
-			bewitParams.exp = params.exp;
+		if (options.exp) {
+			bewitParams.exp = options.exp;
 		} else {
-			bewitParams.ttlSec = params.ttl || 86400; // 24 hours in seconds
+			bewitParams.ttlSec = options.ttl || 86400; // 24 hours in seconds
 		}
 
 		var bewit = hawk.client.getBewit(url, bewitParams);
@@ -128,7 +128,7 @@
 		} else {
 			url += "&";
 		}
-		url += "bewit=" + encodeURLComponent(bewit);
+		url += "bewit=" + encodeURIComponent(bewit);
 		if (hash) {
 			url += hash;
 		}
@@ -152,6 +152,9 @@
 	};
 
 	TentClient.prototype.getSignedURL = function (url, params, options) {
+		if (!options) {
+			options = {};
+		}
 		options.credentials = options.credentials || this.credentials;
 
 		url = this.getNamedURL.apply(this, arguments);
@@ -182,7 +185,7 @@
 		if (options.attachments && options.attachments.length) {
 			// multipart
 			data = [['post', new Blob([JSON.stringify(data)], { type: mediaType }), 'post.json']];
-			data.concat(options.attachments);
+			data = data.concat(options.attachments);
 		} else {
 			headers['Content-Type'] = mediaType;
 		}
@@ -231,7 +234,7 @@
 		if (options.attachments && options.attachments.length) {
 			// multipart
 			data = [['post', new Blob([JSON.stringify(data)], { type: mediaType }), 'post.json']];
-			data.concat(options.attachments);
+			data = data.concat(options.attachments);
 		} else {
 			headers['Content-Type'] = mediaType;
 		}
