@@ -21,7 +21,7 @@
 		}
 
 		var method = options.method || 'GET',
-				params = options.params || {},
+				params = options.params || [{}],
 				url = options.url || this.client.getNamedURL(options.endpoint, params),
 				body = options.body,
 				headers = options.headers || {},

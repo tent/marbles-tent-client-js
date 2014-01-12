@@ -66,9 +66,26 @@
 		});
 	};
 
+	TentClient.lookupParamObject = function (key, params) {
+		for (var i = 0, _len = params.length; i < _len; i++) {
+			if (params[i].hasOwnProperty(key)) {
+				return params[i];
+			}
+		}
+		return null;
+	};
+
+	TentClient.lookupParam = function (key, params) {
+		var paramObj = TentClient.lookupParamObject(key, params);
+		if (!paramObj) {
+			return null;
+		}
+		return paramObj[key];
+	};
+
 	TentClient.namedURL = function (server, name, params) {
 		if (!params) {
-			params = {};
+			params = [{}];
 		}
 
 		if (!server || !server.urls) {
@@ -81,8 +98,10 @@
 		}
 
 		var url = _template.replace(URI_TEMPLATE_REGEX, function () {
-			var param = params[RegExp.$1] || '';
-			delete params[RegExp.$1];
+			var key = RegExp.$1;
+			var paramObj = TentClient.lookupParamObject(key, params) || {};
+			var param = paramObj[key];
+			delete paramObj[key];
 
 			return encodeURIComponent(param);
 		});
@@ -176,7 +195,7 @@
 		}
 
 		var headers = options.headers || [],
-				params = options.params || {},
+				params = options.params || [{}],
 				callback = options.callback,
 				middleware = options.middleware || [];
 
@@ -213,21 +232,21 @@
 		}
 
 		var headers = options.headers || [],
-				params = options.params || {},
+				params = options.params || [{}],
 				callback = options.callback,
 				middleware = options.middleware || [];
 
 		var mediaType = TentClient.MEDIA_TYPES.post + '; type="' + data.type + '"';
 
-		if (!params.hasOwnProperty('entity')) {
-			params.entity = this.entity;
+		if (!TentClient.lookupParamObject('entity', params)) {
+			params[0].entity = this.entity;
 		}
 
-		if (!params.hasOwnProperty('post')) {
-			params.post = data.id;
+		if (!TentClient.lookupParamObject('post', params)) {
+			params[0].post = data.id;
 		}
 
-		if (!params.entity || !params.post) {
+		if (!TentClient.lookupParam('entity', params) || !TentClient.lookupParam('post', params)) {
 			throw Error("TentClient: updatePost: missing entity and/or post params: " + JSON.stringify(params));
 		}
 
@@ -258,15 +277,15 @@
 		}
 
 		var headers = options.headers || [],
-				params = options.params || {},
+				params = options.params || [{}],
 				callback = options.callback,
 				middleware = options.middleware || [];
 
-		if (!params.hasOwnProperty('entity')) {
-			params.entity = this.entity;
+		if (!TentClient.lookupParamObject('entity', params)) {
+			params[0].entity = this.entity;
 		}
 
-		if (!params.entity || !params.post) {
+		if (!TentClient.lookupParam('entity', params) || !TentClient.lookupParam('post', params)) {
 			throw Error("TentClient: deletePost: missing entity and/or post params: " + JSON.stringify(params));
 		}
 
@@ -286,15 +305,15 @@
 		}
 
 		var headers = options.headers || [],
-				params = options.params || {},
+				params = options.params || [{}],
 				callback = options.callback,
 				middleware = options.middleware || [];
 
-		if (!params.hasOwnProperty('entity')) {
-			params.entity = this.entity;
+		if (!TentClient.lookupParamObject('entity', params)) {
+			params[0].entity = this.entity;
 		}
 
-		if (!params.entity || !params.post) {
+		if (!TentClient.lookupParam('entity', params) || !TentClient.lookupParam('post', params)) {
 			throw Error("TentClient: getPost: missing entity and/or post params: " + JSON.stringify(params));
 		}
 
@@ -336,7 +355,7 @@
 		}
 
 		var headers = options.headers || [],
-				params = options.params || {},
+				params = options.params || [{}],
 				callback = options.callback,
 				middleware = options.middleware || [];
 
@@ -358,11 +377,11 @@
 		}
 
 		var headers = options.headers || [],
-				params = options.params || {},
+				params = options.params || [{}],
 				callback = options.callback,
 				middleware = options.middleware || [];
 
-		if (!params.entity) {
+		if (!TentClient.lookupParam('entity', params)) {
 			throw Error("TentClient: performDiscovery: missing entity param: " + JSON.stringify(params));
 		}
 
@@ -384,7 +403,7 @@
 		}
 
 		var headers = options.headers || [],
-				params = options.params || {},
+				params = options.params || [{}],
 				callback = options.callback,
 				middleware = options.middleware || [];
 
