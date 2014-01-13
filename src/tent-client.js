@@ -17,6 +17,8 @@
 			throw Error("TentClient: ArgumentError: Missing options.serverMetaPost");
 		}
 
+		this.entity = entityURI;
+
 		this.servers = TentClient.sortServers(this.serverMetaPost.content.servers);
 
 		this.middleware = options.middleware || [];
