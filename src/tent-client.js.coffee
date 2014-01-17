@@ -16,9 +16,9 @@ class @TentClient
     servers[0]
 
   @namedUrl: (server, name, params = {}) ->
-    server?.urls[name]?.replace URI_TEMPLATE_REGEX, =>
-      param = params[RegExp.$1] || ''
-      delete params[RegExp.$1]
+    server?.urls[name]?.replace URI_TEMPLATE_REGEX, (wholeMatch, firstGroup) =>
+      param = params[firstGroup] || ''
+      delete params[firstGroup]
 
       encodeURIComponent(param)
 
