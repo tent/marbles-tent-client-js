@@ -99,8 +99,7 @@
 			throw Error("TentClient: Endpoint "+ JSON.stringify(name) + " not found in " + JSON.stringify(server.urls));
 		}
 
-		var url = _template.replace(URI_TEMPLATE_REGEX, function () {
-			var key = RegExp.$1;
+		var url = _template.replace(URI_TEMPLATE_REGEX, function (m, key) {
 			var paramObj = TentClient.lookupParamObject(key, params) || {};
 			var param = paramObj[key];
 			delete paramObj[key];
