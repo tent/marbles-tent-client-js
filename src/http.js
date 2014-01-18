@@ -11,7 +11,7 @@
 	HTTP.Adapter = Marbles.HTTP;
 
 	HTTP.prototype.nextServer = function () {
-		this.server = this.client.servers[this.serverIndex];
+		this.server = this.client.servers[this.nextIndex];
 		this.nextIndex++;
 	};
 
