@@ -35,7 +35,7 @@
 		}
 
 		var _callback = function (res, xhr) {
-			if (!(xhr.status >= 200 && xhr.status < 300) && !(xhr.status >= 400 && xhr.status < 500) && this.servers[this.nextIndex]) {
+			if (!(xhr.status >= 200 && xhr.status < 300) && !(xhr.status >= 400 && xhr.status < 500) && this.client.servers[this.nextIndex]) {
 				this.nextServer();
 				this.runRequest({
 					method: method,
