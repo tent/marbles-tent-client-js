@@ -72,7 +72,7 @@
 					}
 				}
 			}
-		};
+		}.bind(this);
 
 		HTTP.Adapter({
 			method: method,
