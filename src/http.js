@@ -74,7 +74,7 @@
 			}
 		};
 
-		new HTTP.Adapter({
+		HTTP.Adapter({
 			method: method,
 			url: url,
 			params: params[0],
