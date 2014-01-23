@@ -77,7 +77,7 @@
 		HTTP.Adapter({
 			method: method,
 			url: url,
-			params: params[0],
+			params: params,
 			body: body,
 			headers: headers,
 			callback: _callback,
