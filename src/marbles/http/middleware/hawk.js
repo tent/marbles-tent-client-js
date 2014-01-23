@@ -16,28 +16,28 @@
 
 	Marbles.HTTP.Middleware.Hawk = Hawk;
 
-	Hawk.prototype.processRequest = function (http) {
+	Hawk.prototype.willSendRequest = function (request) {
 		var options = {};
 		for (var k in this.options) {
 			options[k] = this.options[k];
 		}
 
-		if (http.body && !http.multipart) {
-			options.payload = http.body;
+		if (request.requestBody && !request.multipart) {
+			options.payload = request.requestBody;
 		}
-		options.contentType = http.getRequestHeader('Content-Type');
+		options.contentType = request.getRequestHeader('Content-Type');
 
-		var header = hawk.client.header(http.url, http.method, options).field;
+		var header = hawk.client.header(request.uri.toString(), request.method, options).field;
 
 		if (!header) {
 			return;
 		}
 
-		http.setRequestHeader('Authorization', header);
+		request.setRequestHeader('Authorization', header);
 	};
 
-	Hawk.prototype.processResponse = function (http, xhr, options) {
-		var header = http.getResponseHeader('WWW-Authenticate');
+	Hawk.prototype.didReceiveResponse = function (request) {
+		var header = request.getResponseHeader('WWW-Authenticate');
 		if (!header || header === 'Hawk') {
 			return;
 		}
@@ -45,11 +45,11 @@
 		// Verify tsm and get ts skew offset
 		var res = { headers: { 'www-authenticate': header } };
 		if (!hawk.client.authenticate(res, this.options.credentials)) {
-			options.setError("Invalid WWW-Authenticate: " + JSON.stringify(header));
+			request.terminate("Invalid WWW-Authenticate: " + JSON.stringify(header));
 			return;
 		}
 
-		options.retry();
+		request.resend();
 	};
 
 })();
