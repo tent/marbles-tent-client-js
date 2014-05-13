@@ -3,18 +3,21 @@
 //= require ./http
 //= require ./marbles/http/middleware/hawk
 
+var TentClient;
+
 (function () {
+	"use strict";
 
 	var URI_TEMPLATE_REGEX = /\{([^\}]+)\}/g;
 
-	this.TentClient = function TentClient (entityURI, options) {
+	TentClient = function TentClient (entityURI, options) {
 		if (!options) {
 			options = {};
 		}
 
 		this.serverMetaPost = options.serverMetaPost;
 		if (!this.serverMetaPost) {
-			throw Error("TentClient: ArgumentError: Missing options.serverMetaPost");
+			throw new Error("TentClient: ArgumentError: Missing options.serverMetaPost");
 		}
 
 		this.entity = entityURI;
@@ -91,12 +94,12 @@
 		}
 
 		if (!server || !server.urls) {
-			throw Error("TentClient: Invalid server: " + JSON.stringify(server));
+			throw new Error("TentClient: Invalid server: " + JSON.stringify(server));
 		}
 
 		var _template = server.urls[name];
 		if (!_template) {
-			throw Error("TentClient: Endpoint "+ JSON.stringify(name) + " not found in " + JSON.stringify(server.urls));
+			throw new Error("TentClient: Endpoint "+ JSON.stringify(name) + " not found in " + JSON.stringify(server.urls));
 		}
 
 		var url = _template.replace(URI_TEMPLATE_REGEX, function (m, key) {
@@ -109,7 +112,7 @@
 
 		if (URI_TEMPLATE_REGEX.test(url)) {
 			var missing = url.match(URI_TEMPLATE_REGEX);
-			throw Error("TentClient: Missing params " + missing.join(',') + ": " + JSON.stringify(params));
+			throw new Error("TentClient: Missing params " + missing.join(',') + ": " + JSON.stringify(params));
 		}
 
 		return url;
@@ -117,7 +120,7 @@
 
 	TentClient.signURL = function (url, options) {
 		if (!options.credentials) {
-			throw Error("TentClient: Can't sign URL without credentials!");
+			throw new Error("TentClient: Can't sign URL without credentials!");
 		}
 
 		var credentials = options.credentials;
@@ -188,7 +191,7 @@
 
 	TentClient.prototype.createPost = function (data, options) {
 		if (!data.type) {
-			throw Error("TentClient: createPost: missing type: " + JSON.stringify(data));
+			throw new Error("TentClient: createPost: missing type: " + JSON.stringify(data));
 		}
 
 		if (!options) {
@@ -225,7 +228,7 @@
 
 	TentClient.prototype.updatePost = function (data, options) {
 		if (!data.type) {
-			throw Error("TentClient: updatePost: missing type: " + JSON.stringify(data));
+			throw new Error("TentClient: updatePost: missing type: " + JSON.stringify(data));
 		}
 
 		if (!options) {
@@ -248,7 +251,7 @@
 		}
 
 		if (!TentClient.lookupParam('entity', params) || !TentClient.lookupParam('post', params)) {
-			throw Error("TentClient: updatePost: missing entity and/or post params: " + JSON.stringify(params));
+			throw new Error("TentClient: updatePost: missing entity and/or post params: " + JSON.stringify(params));
 		}
 
 		if (options.attachments && options.attachments.length) {
@@ -287,7 +290,7 @@
 		}
 
 		if (!TentClient.lookupParam('entity', params) || !TentClient.lookupParam('post', params)) {
-			throw Error("TentClient: deletePost: missing entity and/or post params: " + JSON.stringify(params));
+			throw new Error("TentClient: deletePost: missing entity and/or post params: " + JSON.stringify(params));
 		}
 
 		return this.runRequest({
@@ -315,7 +318,7 @@
 		}
 
 		if (!TentClient.lookupParam('entity', params) || !TentClient.lookupParam('post', params)) {
-			throw Error("TentClient: getPost: missing entity and/or post params: " + JSON.stringify(params));
+			throw new Error("TentClient: getPost: missing entity and/or post params: " + JSON.stringify(params));
 		}
 
 		return this.runRequest({
@@ -383,7 +386,7 @@
 				middleware = options.middleware || [];
 
 		if (!TentClient.lookupParam('entity', params)) {
-			throw Error("TentClient: performDiscovery: missing entity param: " + JSON.stringify(params));
+			throw new Error("TentClient: performDiscovery: missing entity param: " + JSON.stringify(params));
 		}
 
 		headers.Accept = TentClient.MEDIA_TYPES + '; type="https://tent.io/types/post/meta/v0"';
