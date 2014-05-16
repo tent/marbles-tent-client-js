@@ -19,6 +19,7 @@
   "browser": true,
 	"globals": {
 		"Marbles": false,
+		"TentClient": false,
 		"hawk": false
 	}
 }
