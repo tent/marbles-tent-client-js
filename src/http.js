@@ -53,7 +53,7 @@
 				if (typeof callback === 'function') {
 					callback(res, xhr);
 				} else {
-					if (xhr.status <= 200 && xhr.status < 400) {
+					if (xhr.status <= 200 && xhr.status < 400 && xhr.status !== 0) {
 						if (typeof callback.success === 'function') {
 							callback.success(res, xhr);
 						}
