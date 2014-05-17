@@ -1,5 +1,7 @@
 (function () {
 
+	"use strict";
+
 	function HTTP (client) {
 		this.client = client;
 		this.nextIndex = 0;

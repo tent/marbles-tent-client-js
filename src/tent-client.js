@@ -3,14 +3,12 @@
 //= require ./http
 //= require ./marbles/http/middleware/hawk
 
-var TentClient;
-
-(function () {
+(function (expose) {
 	"use strict";
 
 	var URI_TEMPLATE_REGEX = /\{([^\}]+)\}/g;
 
-	TentClient = function TentClient (entityURI, options) {
+	var TentClient = expose.TentClient = function TentClient (entityURI, options) {
 		if (!options) {
 			options = {};
 		}
@@ -421,4 +419,4 @@ var TentClient;
 		});
 	};
 
-})();
+})(this);

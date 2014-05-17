@@ -1,6 +1,7 @@
 //= require hawk
 
 (function () {
+	"use strict";
 
 	function Hawk (options) {
 		if (!options) {
@@ -19,7 +20,9 @@
 	Hawk.prototype.willSendRequest = function (request) {
 		var options = {};
 		for (var k in this.options) {
-			options[k] = this.options[k];
+			if (this.options.hasOwnProperty(k)) {
+				options[k] = this.options[k];
+			}
 		}
 
 		if (request.requestBody && !request.multipart) {
